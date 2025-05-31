@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block title %}Vacation List{% endblock %}
+{% block content %}
+    <h2 class="mb-4">Vacation List</h2>
+    <ul class="list-group">
+    {% for vacation in vacations %}  
+        <li class="list-group-item">
+            <strong>{{ vacation.description }}</strong> in {{ vacation.country.name }} <br>
+        From {{ vacation.start_date }} to {{ vacation.end_date }} – ${{ vacation.price }}
+        </li>
+        {% empty %}
+
+           <li class="list-group-item"> No Vacations Found  </li>
+     {% endfor %}
+    </ul>   
+{% endblock %}

@@ -1,36 +1,28 @@
 from django.db import models
-from user.models import User
-# Create your models here.
+from django.conf import settings
 
 class Country(models.Model):
-    country_name = models.CharField(max_length=30)
-    class Meta:
-        db_table = 'country'
-        managed = False
+    name = models.CharField(max_length=50)
+
     def __str__(self):
-        return self.country_name
+        return self.name
 class Vacation(models.Model):
-    country_id=models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     description = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-    file_img = models.CharField(max_length=150)
-    price = models.FloatField()
+    start_date=models.DateField()
+    end_date=models.DateField()
+    image=models.ImageField(upload_to='images/')
+    price=models.FloatField()
+    liked_by=models.ManyToManyField(settings.AUTH_USER_MODEL,through='Like',related_name='liked_vacations')
 
-    class Meta:
-        db_table = 'vacations'
-        managed = False
     def __str__(self):
-        return f"{self.description} ({self.country}) {self.start_date} - {self.end_date}"
+        return f"{self.description} in {self.country.name} ({self.start_date} - {self.end_date})"
 
-class Likes(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    vacation = models.ForeignKey(Vacation, on_delete=models.DO_NOTHING, db_column='vacation_id')
-
+class Like(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    vacation=models.ForeignKey(Vacation, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = 'likes'
-        managed = False
         unique_together = ('user', 'vacation')
 
     def __str__(self):
