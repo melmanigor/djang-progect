@@ -25,6 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',home,name='home'),
     path('vacation/', include('vacation.urls')),
-]
+    path('user/', include('user.urls')),
+
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,25 +1,24 @@
 {% extends 'layout.html' %}
 
-
-{% block title %}Vacation Project{% endblock %}
+{% block title %}Home | Vacation Project{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1>Welcome To Our Vacation Website</h1>
-    <p class="lead mt-3">"Here you can browse, sign up, and like dreamy vacations 🎉"</p>
-       {% if user.is_authenticated %}
-       <div class="allert alert-success mt-3">
-        Hello {{ user.username }}
-       </div>
-       {% else %}
-       <div class="alert alert-info mt-3">
-        You are not logged in <a href="{% url 'login' %}">Log In here</a> Or <a href="{% url 'signup' %}">Sign Up here</a>
-       </div>
-       {% endif %}
-       
-        <a href="{% url 'vacation_list' %}" class="btn btn-primary">Vacations List</a>
+<div class="home-wrapper text-center py-5">
+    <h1 class="display-4 fw-bold">Welcome To Our Vacation Website</h1>
+    <p class="lead mb-4">Here you can browse, sign up, and like dreamy vacations 🎉</p>
 
-       
-    </div>
+    {% if user.is_authenticated %}
+        <div class="alert alert-success w-75 mx-auto">
+            Hello {{ user.username }}
+        </div>
+    {% else %}
+        <div class="alert alert-info w-75 mx-auto">
+            You are not logged in. 
+            <a href="{% url 'login' %}">Log In here</a> or 
+            <a href="{% url 'signup' %}">Sign Up here</a>
+        </div>
+    {% endif %}
 
+    <a href="{% url 'vacation_list' %}" class="btn btn-primary btn-lg mt-3">Explore Vacations</a>
+</div>
 {% endblock %}

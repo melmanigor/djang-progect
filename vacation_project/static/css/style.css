@@ -1,0 +1,48 @@
+/* כללי */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* הפוך את ה-body למיכל גמיש */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* תוכן ראשי יתפוס את כל השטח הזמין */
+main {
+    flex: 1;
+}
+
+/* עיצוב ה-footer */
+footer {
+    background-color: #212529;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: auto;
+}
+
+/* כפתורים */
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+/* יישור מרכזי */
+.text-center {
+    text-align: center;
+}
+
+/* מרווחים */
+.mt-5 {
+    margin-top: 3rem !important;
+}
+.pt-5 {
+    padding-top: 3rem !important;
+}
