@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="text-center mt-5">
+    <h1 class="display-4 text-danger">403 - Forbidden</h1>
+    <p class="lead">Only Admins can access this page.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">Go Back Home</a>
+  </div>
+{% endblock %}

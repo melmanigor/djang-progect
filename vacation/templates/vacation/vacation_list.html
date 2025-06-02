@@ -2,15 +2,58 @@
 {% block title %}Vacation List{% endblock %}
 {% block content %}
     <h2 class="mb-4">Vacation List</h2>
-    <ul class="list-group">
-    {% for vacation in vacations %}  
-        <li class="list-group-item">
-            <strong>{{ vacation.description }}</strong> in {{ vacation.country.name }} <br>
-        From {{ vacation.start_date }} to {{ vacation.end_date }} – ${{ vacation.price }}
-        </li>
-        {% empty %}
+    {% if request.user.is_superuser %}
+  <a href="{% url 'add_vacation' %}" class="btn btn-primary">+ Add Vacation</a>
+{% endif %}
 
-           <li class="list-group-item"> No Vacations Found  </li>
-     {% endfor %}
-    </ul>   
-{% endblock %}
+     <br>
+     <br>
+     {% if vacations %}
+     <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Image</th>
+                    <th>Country</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Price</th>
+                    <th>Liked BY</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for vacation in vacations %}
+                <tr>
+                    <td>
+                        {% if vacation.image %}
+                            <img src="{{ vacation.image.url }}" alt="{{ vacation.description }}" style="max-width: 100px;" class="vacation-img">
+                        {% else %}
+                             No Image
+                        {% endif %}
+                    </td>
+                    <td>{{ vacation.country.name }}</td>
+                    <td>{{ vacation.description }}</td>
+                    <td>{{ vacation.start_date }}</td>
+                    <td>{{ vacation.end_date }}</td>
+                    <td>${{ vacation.price }}</td>
+                    <td>
+                        {% for user in vacation.liked_by.all %}
+                            {{ user.username }}<br>
+                        {% endfor %}
+                    </td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+     </div>
+      {% else %}
+      <div class="alert alert-info">No vacations found.</div>
+      {% endif %}
+      {% endblock %}
+
+  
+    
