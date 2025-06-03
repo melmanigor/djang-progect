@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login,logout
 from django.contrib.auth.views import LoginView,LogoutView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm,LoginForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -20,6 +20,7 @@ class SignupView(SuccessMessageMixin,CreateView):
         return response
 
 class LoginView(SuccessMessageMixin,LoginView):
+    form_class = LoginForm
     template_name = 'user/login.html'
     success_message = "Logged in successfully"
 

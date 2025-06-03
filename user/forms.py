@@ -1,14 +1,49 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import User
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Fieldset, ButtonHolder
+from crispy_forms.layout import Div
 
 
 class SignUpForm(UserCreationForm):
-      email=forms.EmailField(required=True)
-      class Meta(UserCreationForm.Meta):
-           model=User
-           fields=['username','email','first_name','last_name','password1','password2','role']
+    email = forms.EmailField(required=True)
 
-class LoginForm(forms.Form):
-      username=forms.CharField(label='Username',required=True,max_length=30)
-      password=forms.CharField(label='Password',required=True,widget=forms.PasswordInput)
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset('Sign Up',
+                'username',
+                'email',
+                'first_name',
+                'last_name',
+                'password1',
+                'password2',
+                'role',
+            ),
+            ButtonHolder(
+                Submit('submit', 'Sign Up', css_class='btn btn-success')
+            )
+        )
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, request=None, *args, **kwargs):
+        super().__init__(request=request, *args, **kwargs)  
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset('Login',
+                'username',
+                'password',
+            ),
+             Div(
+        Submit('submit', 'Login', css_class='btn btn-primary'),
+        css_class='text-center'  
+    )
+)
