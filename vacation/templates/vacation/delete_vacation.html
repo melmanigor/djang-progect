@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block title %}Delete Vacation{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Delete Vacation</h2>
+  <p>Are you sure you want to delete the vacation in "{{ object.country.name }}"?</p>
+  <form method="post" class="d-flex gap-2">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'vacation_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

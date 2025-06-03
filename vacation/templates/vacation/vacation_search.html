@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block title %}Search Vacation{% endblock %}
+{% block content %}
+
+<h2 class="mb-4">Search Vacation by Country</h2>
+
+<form method="post" class="mb-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if vacations %}
+  <ul class="list-group">
+    {% for vacation in vacations %}
+      <li class="list-group-item">
+        {{ vacation.description }} – {{ vacation.country.name }}
+      </li>
+    {% endfor %}
+  </ul>
+{% elif vacations is not none %}
+  <div class="alert alert-warning">No vacations found for this country.</div>
+{% endif %}
+
+{% endblock %}

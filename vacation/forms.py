@@ -1,22 +1,23 @@
 from django import forms
-from vacation.models import Vacation
+from vacation.models import Vacation, Country
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit , Layout, Fieldset, ButtonHolder, Button
 
 class VacationForm(forms.Form):
-    name = forms.CharField(max_length=100)
-
+    country = forms.ModelChoiceField(queryset=Country.objects.all(),label='Select Country',required=True)
 class VacationCreateForm(forms.ModelForm):
     class Meta:
         model = Vacation
-        fields = '__all__'
+        
+        exclude = ['liked_by']
+
+       
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
-   
-        
 
+          
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -30,8 +31,8 @@ class VacationCreateForm(forms.ModelForm):
                 'start_date',
                 'end_date',
                 'image',
-                'price',
-                'liked_by'
+                'price'
+             
             ),
             ButtonHolder(
                 Submit('submit', 'Save', css_class='btn btn-success'),
