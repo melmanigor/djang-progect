@@ -1,5 +1,6 @@
-/* כללי */
-html, body {
+
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -39,41 +40,43 @@ footer {
 .mt-5 {
     margin-top: 3rem !important;
 }
+
 .pt-5 {
     padding-top: 3rem !important;
 }
+
 .home-background {
-    background-image: url('../images/Brazil_01.webp'); 
+    background-image: url('../images/Brazil_01.webp');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     min-height: 70vh;
-    border-radius: 10px; 
+    border-radius: 10px;
 }
 
 .vacation-img-wrapper {
-  position: relative;
-  overflow: visible;
-  display: inline-block;
-  width: 120px;
-  height: 90px;
+    position: relative;
+    overflow: visible;
+    display: inline-block;
+    width: 120px;
+    height: 90px;
 }
 
 .vacation-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-  border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    border-radius: 4px;
 }
 
 .vacation-img:hover {
-  transform: scale(2);
-  z-index: 10;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    transform: scale(2);
+    z-index: 10;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .table-responsive {
-  position: relative;
-  overflow: visible !important;
+    position: relative;
+    overflow: visible !important;
 }
