@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, CreateView, View, UpdateView,FormView
 from .models import Vacation, Country
-from .forms import VacationCreateForm, VacationForm
+from .forms import VacationCreateForm, VacationForm, VacationUpdateForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
@@ -56,7 +56,7 @@ class LikeToggleView(LoginRequiredMixin, View):
 
 class VacationUpdateView(UserPassesTestMixin, UpdateView):
     model = Vacation
-    form_class = VacationCreateForm
+    form_class = VacationUpdateForm
     template_name = 'vacation/update_vacation.html'
     success_url = reverse_lazy('vacation_list')
 

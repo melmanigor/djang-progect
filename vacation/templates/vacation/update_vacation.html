@@ -7,6 +7,14 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Update Vacation</h2>
 
+    {% if form.instance.image %}
+    <div class="text-center mb-4">
+        <label class="form-label d-block">Current Image:</label>
+        <img src="{{ form.instance.image.url }}" alt="Current image"
+             class="vacation-preview-img">
+    </div>
+    {% endif %}
+
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% crispy form %}

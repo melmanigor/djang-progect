@@ -37,7 +37,7 @@ class VacationCreateForm(forms.ModelForm):
             ),
             ButtonHolder(
                 Submit('submit', 'Save', css_class='btn btn-success'),
-                Button('cancel', 'Cancel', css_class='btn btn-secondary', onclick="window.location.href='/clothing/'")
+                Button('cancel', 'Cancel', css_class='btn btn-secondary', onclick="window.location.href='/vacation/'")
             )
         )
     def clean(self):
@@ -53,3 +53,43 @@ class VacationCreateForm(forms.ModelForm):
         
         if start_date and end_date and start_date > end_date:
             self.add_error('end_date', 'End date must be after start date.')
+
+class VacationUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Vacation
+        exclude = ['liked_by']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+    
+    def  __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False  
+        self.helper.layout = Layout(
+            Fieldset(
+                'Update Vacation',
+                'country',
+                'description',
+                'start_date',
+                'end_date',
+                'image',
+                'price'
+            ),
+            ButtonHolder(
+                Submit('submit', 'Save', css_class='btn btn-success'),
+                Button('cancel', 'Cancel', css_class='btn btn-secondary', onclick="window.location.href='/vacation/'")
+            )
+        )
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get('start_date')
+        end_date = cleaned_data.get('end_date')
+
+        if start_date and end_date and start_date > end_date:
+            self.add_error('end_date', 'End date must be after start date.')
+

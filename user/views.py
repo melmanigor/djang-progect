@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 class SignupView(SuccessMessageMixin,CreateView):
     form_class = SignUpForm
     template_name = 'user/signup.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('vacation_list')
     success_message = "Account created successfully"
     def form_valid(self, form):
         response = super().form_valid(form)
