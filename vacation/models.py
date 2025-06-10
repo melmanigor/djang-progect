@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class Country(models.Model):
     name = models.CharField(max_length=50, unique=True)
@@ -12,7 +14,7 @@ class Vacation(models.Model):
     start_date=models.DateField()
     end_date=models.DateField()
     image=models.ImageField(upload_to='images/')
-    price=models.FloatField()
+    price=models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0), MaxValueValidator(10000)])
     liked_by=models.ManyToManyField(settings.AUTH_USER_MODEL,through='Like',related_name='liked_vacations')
 
     def __str__(self):

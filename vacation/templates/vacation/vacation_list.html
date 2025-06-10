@@ -26,72 +26,61 @@
   <button type="submit" class="btn btn-outline-primary">Search</button>
 </form>
 
-  {% if vacations %}
-    <div class="table-responsive">
-      <table class="table table-bordered table-striped align-middle text-center">
-        <thead class="table-dark">
-          <tr>
-            <th>Image</th>
-            <th>Country</th>
-            <th>Description</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Price</th>
-            <th>Liked By</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for vacation in vacations %}
-            <tr>
-              <td>
-                {% if vacation.image %}
-                  <div class="vacation-img-wrapper">
-                    <img src="{{ vacation.image.url }}" alt="{{ vacation.description }}" class="vacation-img">
-                  </div>
-                {% else %}
-                  No Image
-                {% endif %}
-              </td>
-              <td>{{ vacation.country.name }}</td>
-              <td>{{ vacation.description }}</td>
-              <td>{{ vacation.start_date }}</td>
-              <td>{{ vacation.end_date }}</td>
-              <td>${{ vacation.price }}</td>
-              <td>
-                {{ vacation.liked_by.count }} ❤️<br>
-                {% for user in vacation.liked_by.all %}
-                  <small>{{ user.username }}</small>{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-              </td>
-              <td>
-                <div class="d-flex justify-content-center gap-2">
+ {% if vacations %}
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+      {% for vacation in vacations %}
+        <div class="col">
+          <div class="card h-100 shadow text-white" style="background-image: url('{{ vacation.image.url }}'); background-size: cover; background-position: center;">
+
+            <div class="card-body bg-dark bg-opacity-50 d-flex flex-column">
+              <h5 class="card-title">{{ vacation.country.name }}</h5>
+              <p class="card-text">Description: {{ vacation.description|truncatewords:30 }}</p>
+
+              <ul class="list-unstyled small">
+                <li><strong>Start Date:</strong> {{ vacation.start_date }}</li>
+                <li><strong>End Date:</strong> {{ vacation.end_date }}</li>
+                <li><strong>Price:</strong> {{ vacation.price }}$</li>
+                <li><strong>Liked:</strong> {{ vacation.liked_by.count }} ❤️</li>
+                <li>
+                  {% for user in vacation.liked_by.all %}
+                    <small>{{ user.username }}</small>{% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </li>
+              </ul>
+
+              <div class="mt-auto d-flex flex-wrap gap-2">
                 {% if user.is_authenticated %}
-                  <form method="post" action="{% url 'like_vacation' vacation.pk %}">
+                  <form method="post" action="{% url 'like_vacation' vacation.pk %}" class="d-inline">
                     {% csrf_token %}
                     {% if user in vacation.liked_by.all %}
                       <button type="submit" class="btn btn-sm btn-danger">Unlike ❤️</button>
                     {% else %}
-                      <button type="submit" class="btn btn-sm btn-outline-danger">Like 🤍</button>
+                      <button type="submit" class="btn btn-sm btn-outline-light">Like 🤍</button>
                     {% endif %}
                   </form>
                 {% else %}
-                  <small class="text-muted">Login to like</small>
-                {% endif %}
-                 {% if request.user.is_superuser %}
-                  <a href="{% url 'update_vacation' vacation.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                  <a href="{% url 'delete_vacation' vacation.pk %}" class="btn btn-sm btn-danger">Delete</a>
-                  
+                  <small class="text-muted">
+                    <a href="{% url 'login' %}?next={{ request.path }}" class="text-light">Login to like</a>
+                  </small>
                 {% endif %}
 
-               </div> 
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+                {% if request.user.is_superuser %}
+                  <a href="{% url 'update_vacation' vacation.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                  <a href="{% url 'delete_vacation' vacation.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                {% endif %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+
     </div>
-  {% else %}
-    <div class="alert alert-info text-center">No vacations found.</div>
-  {% endif %}
+  </div>
+{% else %}
+  <div class="alert alert-info text-center">No vacations found.</div>
+{% endif %}
+
 {% endblock %}
