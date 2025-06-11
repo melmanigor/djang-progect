@@ -15,7 +15,7 @@ class VacationListView(ListView):
     template_name = 'vacation/vacation_list.html'
     context_object_name = 'vacations'
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().order_by('start_date')
         country_id = self.request.GET.get('country')
         if country_id:
             queryset = queryset.filter(country__id=country_id)

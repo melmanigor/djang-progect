@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'vacation',
     'crispy_forms',
     'crispy_bootstrap5',
+    'rest_framework',
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +144,8 @@ LOGIN_REDIRECT_URL = '/vacation/'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+AUTHENTICATION_BACKENDS = [
+    'user.backends.EmailBackend', 
+    'django.contrib.auth.backends.ModelBackend', 
+]

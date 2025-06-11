@@ -32,26 +32,27 @@ class SignUpForm(UserCreationForm):
                 Submit('submit', 'Sign Up', css_class='btn btn-success')
             )
         )
+    def clean_email(self):
+        email=self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already exists")
+        return email
 
-class LoginForm(AuthenticationForm):
+class LoginForm(forms.Form):
     email = forms.EmailField(label='Email')
     password = forms.CharField(widget=forms.PasswordInput)
 
     def __init__(self, request=None, *args, **kwargs):
-        super().__init__(request=request, *args, **kwargs)  
+        super().__init__(*args, **kwargs)
+        self.request = request
+
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
-            Fieldset('Login',
-                'email',
-                'password',
-            ),
-             Div(
-        Submit('submit', 'Login', css_class='btn btn-primary'),
-        css_class='text-center'
-      
-    )
-)
+            Fieldset('Login', 'email', 'password'),
+            Div(Submit('submit', 'Login', css_class='btn btn-primary'), css_class='text-center')
+        )
+
     def clean(self):
         cleaned_data = super().clean()
         email = cleaned_data.get('email')
@@ -62,3 +63,6 @@ class LoginForm(AuthenticationForm):
             if self.user is None:
                 raise forms.ValidationError("Email or password is incorrect.")
         return cleaned_data
+
+    def get_user(self):
+        return self.user
