@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -45,6 +46,8 @@ class VacationCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
 
 class LikeToggleView(LoginRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):
+        if request.user.is_superuser:
+            return HttpResponseForbidden("Admins cannot like vacations")
         vacation = get_object_or_404(Vacation, pk=pk)
         user = request.user
         if user in vacation.liked_by.all():
@@ -73,6 +76,8 @@ class VacationUpdateView(UserPassesTestMixin, UpdateView):
 
 
 def delete_vacation(request, pk):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Admins can delete vacations")
     vacation = get_object_or_404(Vacation, pk=pk)
 
     if request.method == 'POST':
