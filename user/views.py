@@ -8,6 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, FormView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth import get_backends
 # Create your views here.
 class SignupView(SuccessMessageMixin,CreateView):
     form_class = SignUpForm
@@ -16,6 +17,8 @@ class SignupView(SuccessMessageMixin,CreateView):
     success_message = "Account created successfully"
     def form_valid(self, form):
         response = super().form_valid(form)
+        backend = get_backends()[0]
+        self.object.backend = f"{backend.__module__}.{backend.__class__.__name__}"
         login(self.request, self.object)
         return response
 
