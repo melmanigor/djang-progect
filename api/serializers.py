@@ -43,23 +43,25 @@ class VacationSerializer(serializers.ModelSerializer):
         return data
     
 class UserSignUpSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ['username','first_name', 'last_name', 'email', 'password', 'password2', 'role']
+        fields = ['username','first_name', 'last_name', 'email', 'password1', 'password2', 'role']
 
     def validate(self, data):
-        if data['password'] != data['password2']:
+        if data['password1'] != data['password2']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
         if User.objects.filter(email=data['email']).exists():
             raise serializers.ValidationError({"email": "This email is already in use."})
         return data
 
     def create(self, validated_data):
+        password=validated_data.pop('password1')
         validated_data.pop('password2')
         user=User.objects.create_user(**validated_data)
+        user.set_password(password)
         return user
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

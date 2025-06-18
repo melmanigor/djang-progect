@@ -3,7 +3,7 @@ from .views import VacationListApiView,VacationUpdateApiView,CountryListApiView,
 
 urlpatterns = [
     path('vacations/', VacationListApiView.as_view(), name='api-vacation-list'),
-    path('vacations/<int:pk>/update/', VacationUpdateApiView.as_view(), name='api-vacation-update'),
+    path('vacations/<int:pk>/', VacationUpdateApiView.as_view(), name='api-vacation-update'),
 
     path('vacations-api/<int:pk>/like/', LikeToggleView.as_view(), name='like-toggle'),
     path('countries-api/', CountryListApiView.as_view(), name='api-country-list'),

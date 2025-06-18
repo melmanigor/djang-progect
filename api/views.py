@@ -10,6 +10,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import BasePermission
+
+class IsAdminUserCustom(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role.role_name == 'Admin'
 
 
 class VacationListApiView(generics.ListCreateAPIView):
@@ -22,7 +27,7 @@ class VacationListApiView(generics.ListCreateAPIView):
 class VacationUpdateApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Vacation.objects.all()
     serializer_class = VacationSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminUserCustom]
 
 class CountryListApiView(generics.ListCreateAPIView):
     queryset = Country.objects.all()
