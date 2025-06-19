@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, CreateView, View, UpdateView,FormView
+from django.views.generic import ListView, CreateView, View, UpdateView,FormView,DetailView
 from .models import Vacation, Country
 from .forms import VacationCreateForm, VacationForm, VacationUpdateForm
 from django.urls import reverse_lazy
@@ -97,3 +97,10 @@ class VacationSearchView(FormView):
         country = form.cleaned_data['country']
         vacations = Vacation.objects.filter(country=country)
         return self.render_to_response(self.get_context_data(form=form, vacations=vacations))
+
+class VacationDetailsView(DetailView):
+    model = Vacation
+    template_name = 'vacation/vacation_details.html'
+    context_object_name = 'vacation'
+
+    

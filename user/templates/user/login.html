@@ -28,6 +28,10 @@
   {% csrf_token %}
   {% crispy form %}
 </form>
+<div class="text-center mt-3">
+<a  href="{% url 'signup' %}" >If you don't have an account, sign up here</a>
+</div>
   </div>
 </div>
+
 {% endblock %}

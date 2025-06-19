@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}Vacation Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-lg">
+    <div class="row g-0">
+      <!-- Image -->
+      <div class="col-md-6">
+        <img src="{{ vacation.image.url }}" alt="Vacation Image" class="img-fluid rounded-start w-100 h-100" style="object-fit: cover;">
+      </div>
+
+      <!-- Details -->
+      <div class="col-md-6">
+        <div class="card-body d-flex flex-column justify-content-between h-100">
+          <div>
+            <h3 class="card-title mb-3">{{ vacation.country.name }}</h3>
+            <p class="card-text">{{ vacation.description }}</p>
+
+            <ul class="list-group list-group-flush mb-3">
+              <li class="list-group-item"><strong>Start Date:</strong> {{ vacation.start_date }}</li>
+              <li class="list-group-item"><strong>End Date:</strong> {{ vacation.end_date }}</li>
+              <li class="list-group-item"><strong>Price:</strong> {{ vacation.price }}$</li>
+              <li class="list-group-item"><strong>Likes:</strong> {{ vacation.liked_by.count }} ❤️</li>
+            </ul>
+          </div>
+
+          <div>
+             <div class="d-flex flex-wrap gap-2 mt-3">
+            {% if user.is_authenticated and not user.is_superuser %}
+              <form method="post" action="{% url 'like_vacation' vacation.pk %}">
+                {% csrf_token %}
+                {% if user in vacation.liked_by.all %}
+                  <button type="submit" class="btn btn-danger">Unlike ❤️</button>
+                {% else %}
+                  <button type="submit" class="btn btn-outline-primary">Like 🤍</button>
+                {% endif %}
+              </form>
+            {% elif not user.is_authenticated %}
+              <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-outline-secondary">Login to Like</a>
+            {% endif %}
+
+            {% if user.is_superuser %}
+              <a href="{% url 'update_vacation' vacation.pk %}" class="btn btn-warning">✏️ Edit</a>
+              <a href="{% url 'delete_vacation' vacation.pk %}" class="btn btn-danger">🗑️ Delete</a>
+            {% endif %}
+
+            <a href="{% url 'vacation_list' %}" class="btn btn-secondary mt-3">← Back to Vacation List</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

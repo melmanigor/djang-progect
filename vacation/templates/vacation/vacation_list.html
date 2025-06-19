@@ -65,6 +65,7 @@
                     <a href="{% url 'login' %}?next={{ request.path }}" class="text-light">Login to like</a>
                   </small>
                 {% endif %}
+                <a href="{% url 'vacation_details' vacation.pk %}" class="btn btn-sm btn-info text-white">View Details 👀</a>
 
                 {% if request.user.is_superuser %}
                   <a href="{% url 'update_vacation' vacation.pk %}" class="btn btn-sm btn-warning">Edit</a>

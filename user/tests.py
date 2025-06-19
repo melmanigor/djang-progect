@@ -6,35 +6,48 @@ from .models import Role
 User=get_user_model()
 # Create your tests here.
 class AuthTests(TestCase):
-    def setUp(self):
+    def setUp(self)->None:
+        """
+    Set up a default test user for authentication tests.
+
+    This user will be used across multiple test cases.
+    """
         self.user = User.objects.create_user(
             username='testuser',
             email='test@example.com', 
             password='testpassword12345')
-    def test_login_success(self):
+    def test_login_success(self)->None:
+        """
+        Ensure a user can log in with valid credentials.
+        """
         response=self.client.post(reverse('login'),{
             'email': 'test@example.com',
             'password': 'testpassword12345'
         },follow=True)
-                                
-        
+                    
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.context['user'].is_authenticated)
     
-    def test_login_failure(self):
+    def test_login_failure(self)->None:
+        """
+        Ensure login fails with incorrect password.
+        """
+
         response=self.client.post(reverse('login'),{
             'email': 'test@example.com',
             'password': 'wrongpassword'
         },follow=True)
-                                
-        
+                                       
         self.assertEqual(response.status_code, 200)
         user=response.context.get('user')
         self.assertIsNotNone(user,"No user in response context")
         self.assertFalse(user.is_authenticated, "User is authenticated")
         self.assertContains(response, "Email or password is incorrect.")
 
-    def test_signup_success(self):
+    def test_signup_success(self)->None:
+        """
+        Ensure a new user can sign up with valid data.
+        """
         role=Role.objects.create(role_name='User')
         response=self.client.post(reverse('signup'),{
             'username': 'newuser',
@@ -52,7 +65,10 @@ class AuthTests(TestCase):
         self.assertTrue(User.objects.filter(email='newuser@example.com').exists())
         self.assertTrue(response.context['user'].is_authenticated)
     
-    def test_signup_failure_due_to_existing_email(self):
+    def test_signup_failure_due_to_existing_email(self)->None:
+        """
+        Ensure signup fails if the email is already in use.
+        """
         User.objects.create_user(
             username='existinguser',
             email='duplicate@example.com', 
@@ -69,12 +85,14 @@ class AuthTests(TestCase):
             'role': role.id
         },follow=True)
                                 
-        
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Email already exists")
         self.assertFalse(response.context['user'].is_authenticated)
     
-    def test_logout(self):
+    def test_logout(self)->None:
+        """
+        Ensure an authenticated user can successfully log out.
+        """
         self.client.login(username='testuser', password='testpassword12345')
         response=self.client.post(reverse('logout'),follow=True)
         self.assertEqual(response.status_code, 200)

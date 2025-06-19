@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import VacationListView, VacationCreateView, LikeToggleView, VacationUpdateView, VacationSearchView
+from .views import VacationListView, VacationCreateView, LikeToggleView, VacationUpdateView, VacationSearchView, VacationDetailsView
 from . import views
 
 urlpatterns = [
@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:pk>/edit/',VacationUpdateView.as_view(),name='update_vacation'),
     path('vacation/<int:pk>/delete/', views.delete_vacation, name='delete_vacation'),
     path('vacation/search/', VacationSearchView.as_view(), name='vacation_search'),
+    path('vacation/<int:pk>/', VacationDetailsView.as_view(), name='vacation_details'),
 
 ]
