@@ -11,7 +11,14 @@ from django.conf import settings
 User=get_user_model()
 
 class VacationTest(TestCase):
-    def setUp(self):
+    """
+    Unit tests for the Vacation model and Like relationship.
+    """
+
+    def setUp(self)->None:
+        """
+        Set up test users, a country, a vacation, and like relationship.
+        """
         self.admin_user = User.objects.create_superuser(
             username='admin', email='admin@gmail.com', password='admin'
         )
@@ -31,26 +38,45 @@ class VacationTest(TestCase):
             )
         self.vacation.liked_by.add(self.user)
    
-    def test_vacation_str(self):
+    def test_vacation_str(self)->None:
+        """
+        Test the string representation of a Vacation object.
+        """
         expected=f"Santorini trip in Greece ({self.vacation.start_date} - {self.vacation.end_date})" 
         self.assertEqual(str(self.vacation), expected)   
 
-    def test_like_added(self):
+    def test_like_added(self)->None:
+        """
+        Test that a like can be added.
+        """
         self.vacation.liked_by.add(self.user)
         self.assertIn(self.user, self.vacation.liked_by.all())
-    def test_duplicate_like(self):
+    def test_duplicate_like(self)->None:
+        """
+        Test that duplicate likes are not allowed (unique constraint).
+        """
         
         with self.assertRaises(IntegrityError):
             Like.objects.create(vacation=self.vacation, user=self.user)
     
-    def test_admin_cannot_like_vacation(self):
+    def test_admin_cannot_like_vacation(self)->None:
+        """
+        Test that an admin user cannot like a vacation.
+        """
         self.client.force_login(self.admin_user)
         response = self.client.post(reverse('like_vacation', args=[self.vacation.pk]))
         self.assertEqual(response.status_code, 403)
         self.assertNotIn(self.admin_user, self.vacation.liked_by.all())
 
 class VacationPermissionTest(TestCase):
-    def setUp(self):
+    """
+    Permission tests for vacation CRUD actions depending on user role.
+    """
+
+    def setUp(self)->None:
+        """
+        Set up users, country, vacation data and test image.
+        """
         self.admin_user = User.objects.create_superuser(
             username='admin', email='admin@gmail.com', password='admin'
         )
@@ -77,20 +103,23 @@ class VacationPermissionTest(TestCase):
             'image': self.image_file,
         }
 
-    def test_admin_can_create_vacation(self):
+    def test_admin_can_create_vacation(self)->None:
+        """
+        Test that an admin can create a vacation.
+        """
         self.client.force_login(self.admin_user)
         response = self.client.post(
             reverse('add_vacation'),
             data=self.vacation_data,
             follow=True  
     )
-
-        
-
         self.assertEqual(response.status_code, 200)  
         self.assertTrue(Vacation.objects.filter(description='Tokyo trip').exists())
     
-    def test_regular_user_cannot_create_vacation(self):
+    def test_regular_user_cannot_create_vacation(self)->None:
+        """
+        Test that a regular user cannot create a vacation.
+        """
         self.client.force_login(self.regular_user)
         response = self.client.post(
             reverse('add_vacation'),
@@ -104,7 +133,11 @@ class VacationPermissionTest(TestCase):
             )
         self.assertEqual(response.status_code, 403)
     
-    def test_admin_can_update_vacation(self):
+    def test_admin_can_update_vacation(self)->None:
+        """
+        Test that an admin can update a vacation.
+        """
+
         vacation=Vacation.objects.create(
             country=self.country, 
             description='Old description', 
@@ -128,7 +161,10 @@ class VacationPermissionTest(TestCase):
         self.assertEqual(response.status_code, 200)
         vacation.refresh_from_db()
         self.assertEqual(vacation.description, 'New desc')
-    def test_regular_user_cannot_update_vacation(self):
+    def test_regular_user_cannot_update_vacation(self)->None:
+        """
+        Test that a regular user cannot update a vacation.
+        """
         vacation=Vacation.objects.create(
             country=self.country, 
             description='Old description', 
@@ -155,7 +191,11 @@ class VacationPermissionTest(TestCase):
         self.assertNotEqual(vacation.description,'Unauthorized Update')
         self.assertNotEqual(str(vacation.price),'999')
     
-    def test_admin_can_delete_vacation(self):
+    def test_admin_can_delete_vacation(self)->None:
+        """
+        Test that an admin can delete a vacation.
+        """
+
         vacation=Vacation.objects.create(
             country=self.country, 
             description='To Be Deleted', 
@@ -172,7 +212,10 @@ class VacationPermissionTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(Vacation.objects.filter(pk=vacation.pk).exists())
 
-    def test_regular_user_cannot_delete_vacation(self):
+    def test_regular_user_cannot_delete_vacation(self)->None:
+        """
+        Test that a regular user cannot delete a vacation.
+        """
         vacation=Vacation.objects.create(
             country=self.country, 
             description='Should Not Be Deleted', 
