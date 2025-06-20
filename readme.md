@@ -11,10 +11,18 @@
 - Crispy form styling (with `django-crispy-forms`)
 - Unit & integration tests
 -------------------------------------------------------
+1)  **Create and activate a virtual environment (recommended)**
+        for windows:
+                 python -m venv venv
+                 venv\Scripts\activate
+
+        for mac:
+                  python3 -m venv venv
+                   source venv/bin/activate
 
 
 
-1)  **Install dependencies:**
+2)  **Install dependencies:**
 
           pip install -r requirements.txt
 
