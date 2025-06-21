@@ -16,6 +16,6 @@ class User(AbstractUser):
     Custom user model extending Django's AbstractUser,
     with an additional role field linked to the Role model.
     """
-    role:Role = models.ForeignKey(Role, on_delete=models.CASCADE , null=True)
+    role:Role = models.ForeignKey(Role, on_delete=models.CASCADE , null=True, blank=True)
     def __str__(self):
-        return f"{self.username} {self.role}"
+        return f"{self.username} {self.role}" if self.role else self.username

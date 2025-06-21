@@ -16,7 +16,7 @@ class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'role']
+        fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
     def __init__(self, *args, **kwargs)->None:
         super().__init__(*args, **kwargs)
@@ -30,7 +30,7 @@ class SignUpForm(UserCreationForm):
                 'last_name',
                 'password1',
                 'password2',
-                'role',
+                
             ),
             ButtonHolder(
                Div( Submit('submit', 'Sign Up', css_class='btn btn-success'),css_class='text-center')

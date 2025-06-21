@@ -26,20 +26,34 @@
 
           pip install -r requirements.txt
 
-2)  **Apply migrations:**
+3) **DB settings:**
+
+       Ensure that PostgreSQL is installed and running.
+       Create a PostgreSQL database named vacation_project_db, or update the settings below in vacation_project/settings.py:
+             
+              'NAME': 'vacation_project_db',          
+              'USER': 'postgres',         
+              'PASSWORD': 'your password',         
+              'HOST': 'localhost',
+              'PORT': '5432',
+
+
+3)  **Apply migrations:**
 
           python manage.py migrate
 
-3)  **Load sample data (if you choose to work with my db):**
+4)  **Load sample data (if you choose to work with my db):**
+        
+          Ensure the data.json file is saved with UTF-8 encoding before loading:
+          
+                    python manage.py loaddata data.json
 
-          python manage.py loaddata data.json
-
-4)  **Run development server:**
+5)  **Run development server:**
 
           python manage.py runserver
 
 
-5)   **Users Example**
+6)   **Users Example**
 
 | Role    | Email               | Password    |
 | ------- | ------------------- | ----------- |
@@ -47,7 +61,7 @@
 | Regular | `igor406@gmail.com` | `test12345` |
 
 
-6) **Useful Links**
+7) **Useful Links**
 
         Home: http://localhost:8000/
         Admin Panel: http://localhost:8000/admin
@@ -57,11 +71,11 @@
                                  Username=admin
                                  Password=admin
 
-7)   **Testing**
+8)   **Testing**
        You can test individual apps:
 
                            
-                    a)python manage.py test api.tess
+                    a)python manage.py test api.tests
 
                     b)python manage.py test user.tests
                     
@@ -72,7 +86,7 @@
                      python manage.py test
 
 
-8)    **Notes**
+9)    **Notes**
 
             Not authenticated user only can see the vacation list
 
