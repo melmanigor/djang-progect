@@ -1,3 +1,7 @@
+
+## **IGOR MELMAN**
+
+
 ## A Django web application for managing and viewing vacation packages with user authentication, role-based permissions, and interactive features.
 
 ## Features
@@ -38,22 +42,22 @@
               'PORT': '5432',
 
 
-3)  **Apply migrations:**
+4)  **Apply migrations:**
 
           python manage.py migrate
 
-4)  **Load sample data (if you choose to work with my db):**
+5)  **Load sample data (if you choose to work with my db):**
         
           Ensure the data.json file is saved with UTF-8 encoding before loading:
           
                     python manage.py loaddata data.json
 
-5)  **Run development server:**
+6)  **Run development server:**
 
           python manage.py runserver
 
 
-6)   **Users Example**
+7)   **Users Example**
 
 | Role    | Email               | Password    |
 | ------- | ------------------- | ----------- |
@@ -61,7 +65,7 @@
 | Regular | `igor406@gmail.com` | `test12345` |
 
 
-7) **Useful Links**
+8) **Useful Links**
 
         Home: http://localhost:8000/
         Admin Panel: http://localhost:8000/admin
@@ -71,7 +75,7 @@
                                  Username=admin
                                  Password=admin
 
-8)   **Testing**
+9)   **Testing**
        You can test individual apps:
 
                            
@@ -86,7 +90,7 @@
                      python manage.py test
 
 
-9)    **Notes**
+10)    **Notes**
 
             Not authenticated user only can see the vacation list
 
